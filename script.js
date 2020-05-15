@@ -4,10 +4,34 @@ const newListForm = document.querySelector('.new-list')
 const newListFormAdd = document.querySelector('.new-list > .add')
 const newListFormCancel = document.querySelector('.new-list > .cancel')
 const newListFormInput = document.querySelector('.new-list > input')
-let newListFormVisible = false;
 
 const lists = []
 
+document.querySelector('#save').addEventListener('click', onSave)
+function onSave() {
+    localStorage.setItem('/lists', JSON.stringify(lists.map(e => e.name)))
+    lists.forEach(list => {
+        localStorage.setItem(`${list.name.replace('/', '//')}`, JSON.stringify(list.cards))
+    })
+}
+
+window.onload = onLoad
+function onLoad() {
+    const savedLists = JSON.parse(localStorage.getItem('/lists') || '[]')
+    savedLists.forEach(list => {
+        const cards = JSON.parse(localStorage.getItem(list.replace('/', '//')))
+        addNewList(list)
+        cards.forEach(card => {
+            addNewCard({
+                listName: list,
+                cardName: card
+            })
+        })
+        lists.push({ name: list, cards })
+    })
+}
+
+let newListFormVisible = false;
 newListBtn.addEventListener('click', () => {
     newListFormVisible ? closeNewListForm() : openNewListForm()
 })
@@ -48,10 +72,19 @@ function addNewList(name) {
     const add = document.createElement('button')
     add.classList.add('add')
     add.innerText = 'Add card'
-    add.addEventListener('click', () => addNewCard({listName: name, cardName: textArea.value}))
+    add.addEventListener(
+        'click',
+        () => addNewCard({
+            listName: name,
+            cardName: textArea.value,
+            success: () => textArea.value = '',
+            error: () => textArea.focus()
+        })
+    )
     const cancel = document.createElement('button')
     cancel.classList.add('cancel')
     cancel.innerText = 'Cancel'
+    cancel.addEventListener('click', () => textArea.value = '')
     const newCardForm = document.createElement('div')
     newCardForm.classList.add('new-card')
     newCardForm.appendChild(textArea)
@@ -68,12 +101,21 @@ function addNewList(name) {
     newListFormInput.focus()
 }
 
-function addNewCard({listName = '', cardName = ''}) {
+function addNewCard({listName = '', cardName = '', success = () => {}, error = () => {}}) {
     cardName = cardName.trim()
     const list = lists.find(e => e.name === listName)
-    if(!list) throw new Error('no such list')
-    if(!cardName) return alert('card name can not be empty')
-    if(list.cards.some(e => e === cardName)) return alert('card already exists')
+    if(!list) {
+        error()
+        throw new Error('no such list')
+    }
+    if(!cardName) {
+        error()
+        return alert('card name can not be empty')
+    }
+    if(list.cards.some(e => e === cardName)) {
+        error()
+        return alert('card already exists')
+    }
     list.cards = [...list.cards, cardName]
     const li = document.createElement('li')
     li.classList.add('task')
@@ -81,6 +123,7 @@ function addNewCard({listName = '', cardName = ''}) {
     main.querySelector(`#${listName}`)
         .insertBefore(
             li,
-            main.querySelector(`${listName} > button.add-list`),
+            main.querySelector(`#${listName} > .new-card`),
         )
+    success()
 }
