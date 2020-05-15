@@ -1,0 +1,141 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    background-color: #55aa;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+header > h1 {
+    justify-self: center;
+    margin: 0;
+    font-size: 1.5rem;
+    grid-column: 2;
+}
+
+.searchBox {
+    justify-self: end;
+    grid-column: -2/-1;
+    border-radius: 9999px;
+    border: 0;
+    padding: 0 .5em;
+    float: left;
+}
+
+body {
+    background: center / cover fixed url(bg.jpg);
+    margin: 0;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-top: 5rem;
+    overflow: auto;
+}
+
+main {
+    display: grid;
+    gap: 1rem;
+    margin: 0 1rem;
+    grid-auto-columns: min-content;
+    grid-auto-flow: column;
+}
+
+button {
+    all: unset;
+    background-color: white;
+    border-radius: 5px;
+    margin: 2px;
+    padding: .2rem;
+    color: #533;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+button:hover {
+    filter: brightness(80%);
+}
+
+button:active {
+    filter: opacity(.8);
+}
+
+.add-list {
+    height: 2rem;
+    width: 150px;
+}
+
+.list {
+    background-color: #fffa;
+    backdrop-filter: blur(5px);
+    width: 300px;
+    margin: 0;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.list > label {
+    color: #533;
+    font-weight: bold;
+}
+
+.task {
+    all: unset;
+    display: block;
+    background-color: white;
+    border-radius: 3px;
+    padding: .5rem;
+    margin: .5rem 0;
+}
+
+.new-card {
+    display: grid;
+    grid-template-areas: "input add"
+                        "input cancel";
+}
+
+.new-card > textarea {
+    grid-area: input;
+}
+
+.new-card > .add {
+    grid-area: add;
+}
+
+.new-card > .cancel {
+    grid-area: cancel;
+}
+
+.new-list {
+    display: grid;
+    grid-template-areas: "input input"
+                        "add cancel";
+    grid-auto-rows: min-content;
+    display: none;
+}
+
+.new-list > input {
+    grid-area: input;
+    height: 1rem;
+}
+
+.new-list > .add {
+    grid-area: add;
+    height: 1rem;
+}
+
+.new-list > .cancel {
+    grid-area: cancel;
+    height: 1rem;
+}
