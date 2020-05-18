@@ -5,7 +5,7 @@ const newListFormAdd = document.querySelector('.new-list > .add')
 const newListFormCancel = document.querySelector('.new-list > .cancel')
 const newListFormInput = document.querySelector('.new-list > input')
 
-const lists = []
+let lists = []
 
 document.querySelector('#save').addEventListener('click', onSave)
 function onSave() {
@@ -120,6 +120,7 @@ function addNewCard({listName = '', cardName = '', success = () => {}, error = (
     const li = document.createElement('li')
     li.classList.add('task')
     li.innerText = cardName
+    li.addEventListener('click', select)
     main.querySelector(`#${listName}`)
         .insertBefore(
             li,
@@ -127,3 +128,25 @@ function addNewCard({listName = '', cardName = '', success = () => {}, error = (
         )
     success()
 }
+
+let lastSelected = null
+function select(e) {
+    if (lastSelected) {
+        lastSelected.classList.remove('selected')
+    }
+    e.target.classList.add('selected')
+    lastSelected = e.target
+}
+
+function deleteCard(cardElement = lastSelected) {
+    if (!cardElement) return alert('Select card to delete!')
+    const card = cardElement.innerText
+    const listName = cardElement.parentElement.id
+    const list = lists.find(e => e.name === listName)
+    list.cards = list.cards.filter(e => e !== card)
+    cardElement.remove()
+    lastSelected = null
+}
+
+document.querySelector('#delete')
+    .addEventListener('click', () => deleteCard())
