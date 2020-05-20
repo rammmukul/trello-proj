@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
-    <script src="./script.js" defer></script>
+    <script src="./script.js" type="module"></script>
+    <script src="./util.js" type="module"></script>
+    <script src="./search.js" type="module"></script>
+    <script src="./delete.js" type="module"></script>
 </head>
 
 <body>
@@ -16,7 +19,7 @@
             <button id="delete">Delete</button>
         </div>
         <h1>Terelo</h1>
-        <input class="searchBox" type="text" placeholder="Search"/>
+        <input id="searchBox" type="search" placeholder="Search"/>
     </header>
     <main>
         <button class="add-list">Add list</button>

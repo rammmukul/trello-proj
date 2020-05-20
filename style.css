@@ -22,7 +22,7 @@ header > h1 {
     grid-column: 2;
 }
 
-.searchBox {
+#searchBox {
     justify-self: end;
     grid-column: -2/-1;
     border-radius: 9999px;
@@ -45,9 +45,11 @@ body {
 main {
     display: grid;
     gap: 1rem;
-    margin: 1rem;
+    padding: 1rem;
     grid-auto-columns: min-content;
     grid-auto-flow: column;
+    overflow: auto;
+    scrollbar-width: none;
 }
 
 button {
@@ -141,4 +143,8 @@ button:active {
 
 .selected {
     background-color: #b0afffaf;
+}
+
+.highlighted {
+    background-color: #ffecafaf;
 }
